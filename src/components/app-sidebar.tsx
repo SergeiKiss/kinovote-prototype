@@ -8,10 +8,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarFooter,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
@@ -35,12 +33,12 @@ export function AppSidebar({
       collapsible="icon"
       className="border-r bg-card/40"
     >
-      <SidebarHeader className="p-4">
+      <SidebarHeader className="p-4 h-[73px]">
         <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary self-center px-2 group-data-[collapsible=icon]:hidden">
+            <h1 className="text-3xl font-bold text-primary self-center px-2 group-data-[collapsible=icon]:hidden">
             КиноВоут
             </h1>
-            <h1 className="text-2xl font-bold text-primary self-center hidden group-data-[collapsible=icon]:block">
+            <h1 className="text-3xl font-bold text-primary self-center hidden group-data-[collapsible=icon]:block">
             КВ
             </h1>
             <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
@@ -54,10 +52,10 @@ export function AppSidebar({
               <SidebarMenuButton
                 onClick={() => onSectionChange(item.id)}
                 isActive={activeSection === item.id}
-                className={cn(activeSection === item.id && 'animate-glow')}
+                className={cn(activeSection === item.id && 'animate-glow', 'h-14 text-lg')}
                 tooltip={{ children: item.label }}
               >
-                <item.icon />
+                <item.icon className="w-6 h-6" />
                 <span>{item.label}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
