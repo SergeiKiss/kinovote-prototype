@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import type { ContentItem } from '@/app/page';
+import { cn } from '@/lib/utils';
 
 interface ContentCardProps {
   item: ContentItem;
@@ -18,7 +19,7 @@ export function ContentCard({ item, onClick }: ContentCardProps) {
       aria-label={`View details for ${item.title}`}
     >
       <CardContent className="p-0">
-        <div className="aspect-[2/3] relative">
+        <div className="aspect-[2/3] relative bg-card rounded-md">
           <Image
             src={item.image}
             alt={`Poster for ${item.title}`}

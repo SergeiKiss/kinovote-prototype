@@ -60,14 +60,16 @@ function DetailedView({
       </Button>
       <div className="relative md:flex md:space-x-8">
         <div className="md:w-1/3 lg:w-1/4 flex-shrink-0">
-          <Image
-            src={item.image}
-            alt={`Poster for ${item.title}`}
-            width={400}
-            height={600}
-            className="rounded-lg object-cover w-full shadow-2xl shadow-black"
-            data-ai-hint={item.aiHint}
-          />
+          <div className="aspect-[2/3] relative bg-card rounded-lg shadow-2xl shadow-black">
+            <Image
+              src={item.image}
+              alt={`Poster for ${item.title}`}
+              width={400}
+              height={600}
+              className="rounded-lg object-cover w-full"
+              data-ai-hint={item.aiHint}
+            />
+          </div>
         </div>
         <div className="mt-6 md:mt-0">
           <Badge variant="outline" className="mb-2 border-primary text-primary">
@@ -139,7 +141,7 @@ const WelcomeBanner = () => (
             Start Voting
           </Button>
         </div>
-        <div className="relative md:w-1/2 h-64 md:h-auto md:self-stretch">
+        <div className="relative md:w-1/2 h-64 md:h-auto md:self-stretch bg-card">
           <Image
             src="https://placehold.co/600x400"
             alt="Cinema"
