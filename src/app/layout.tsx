@@ -3,6 +3,8 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import Script from 'next/script';
+import { Metrika } from '@/components/metrika';
+import React from 'react';
 
 export const metadata: Metadata = {
   title: 'КиноВоут',
@@ -42,7 +44,14 @@ export default function RootLayout({
                 k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
             })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=103601738', 'ym');
 
-            ym(103601738, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+            ym(103601738, 'init', {
+                defer: true,
+                webvisor: true,
+                clickmap:true,
+                ecommerce:"dataLayer",
+                accurateTrackBounce:true,
+                trackLinks:true
+            });
           `}
         </Script>
         <noscript>
@@ -50,6 +59,7 @@ export default function RootLayout({
             <img src="https://mc.yandex.ru/watch/103601738" style={{position:'absolute', left:'-9999px'}} alt="" />
           </div>
         </noscript>
+        <Metrika />
         {children}
         <Toaster />
       </body>
