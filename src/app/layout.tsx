@@ -4,8 +4,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'KinoVote TV',
-  description: 'Vote for your favorite movies and series.',
+  title: 'КиноВоут',
+  description: 'Голосуйте за любимые фильмы и сериалы.',
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="ru" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

@@ -16,13 +16,13 @@ export function ContentCard({ item, onClick }: ContentCardProps) {
       onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick()}
       tabIndex={0}
       role="button"
-      aria-label={`View details for ${item.title}`}
+      aria-label={`Показать детали для ${item.title}`}
     >
       <CardContent className="p-0">
         <div className="aspect-[2/3] relative bg-card rounded-md">
           <Image
             src={item.image}
-            alt={`Poster for ${item.title}`}
+            alt={`Постер для ${item.title}`}
             fill
             className="object-cover rounded-md"
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"

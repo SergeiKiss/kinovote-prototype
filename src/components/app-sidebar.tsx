@@ -23,10 +23,10 @@ export function AppSidebar({
   onSectionChange: (section: string) => void;
 }) {
   const menuItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'movies', label: 'Movies', icon: Film },
-    { id: 'series', label: 'Series', icon: Tv },
-    { id: 'voting', label: 'Voting', icon: Vote },
+    { id: 'home', label: 'Главная', icon: Home },
+    { id: 'movies', label: 'Фильмы', icon: Film },
+    { id: 'series', label: 'Сериалы', icon: Tv },
+    { id: 'voting', label: 'Голосование', icon: Vote },
   ];
 
   return (
@@ -38,10 +38,10 @@ export function AppSidebar({
       <SidebarHeader className="p-4">
         <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-primary self-center px-2 group-data-[collapsible=icon]:hidden">
-            KinoVote
+            КиноВоут
             </h1>
             <h1 className="text-2xl font-bold text-primary self-center hidden group-data-[collapsible=icon]:block">
-            KV
+            КВ
             </h1>
             <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
         </div>
