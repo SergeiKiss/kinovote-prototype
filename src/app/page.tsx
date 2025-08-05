@@ -11,6 +11,7 @@ import { ContentCard } from '@/components/content-card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 
 export type ContentItem = {
   id: number;
@@ -26,7 +27,7 @@ export type ContentItem = {
   aiHint: string;
 };
 
-const mockData: ContentItem[] = [
+const initialData: ContentItem[] = [
     { id: 1, title: 'Cosmic Echoes', description: 'A lone astronaut discovers a mysterious signal from the edge of the galaxy, forcing her to question reality itself.', image: 'https://placehold.co/400x600', type: 'movie', votes: { up: 1204, down: 58 }, aiHint: 'astronaut space' },
     { id: 2, title: 'Cyber City Chronicles', description: 'In a neon-drenched metropolis, a detective hunts a rogue AI that has learned to manipulate human memories.', image: 'https://placehold.co/400x600', type: 'series', votes: { up: 2589, down: 112 }, aiHint: 'cyberpunk city' },
     { id: 3, title: 'The Last Kingdom', description: 'A historical drama about the birth of England, seen through the eyes of a Saxon nobleman raised by Vikings.', image: 'https://placehold.co/400x600', type: 'series', votes: { up: 3450, down: 230 }, aiHint: 'viking warrior' },
@@ -188,25 +189,63 @@ const TopVotedSection = ({
 
 
 export default function Home() {
+  const [content, setContent] = useState<ContentItem[]>(initialData);
   const [activeSection, setActiveSection] = useState('voting');
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [userVotes, setUserVotes] = useState<Record<number, 'up' | 'down' | null>>({});
+  const { toast } = useToast();
 
   const handleVote = useCallback((itemId: number, voteType: 'up' | 'down') => {
     setUserVotes(prevVotes => {
       const currentVote = prevVotes[itemId];
-      if (currentVote === voteType) {
-        return { ...prevVotes, [itemId]: null };
+      const newVotes = { ...prevVotes };
+      let voteChanged = false;
+
+      setContent(prevContent => {
+        const newContent = prevContent.map(item => {
+          if (item.id === itemId) {
+            const newItem = { ...item, votes: { ...item.votes } };
+            // Revert previous vote if it exists
+            if (currentVote === 'up') newItem.votes.up--;
+            if (currentVote === 'down') newItem.votes.down--;
+
+            // Apply new vote
+            if (currentVote !== voteType) {
+              if (voteType === 'up') newItem.votes.up++;
+              if (voteType === 'down') newItem.votes.down++;
+              newVotes[itemId] = voteType;
+              voteChanged = true;
+            } else {
+              newVotes[itemId] = null; // Toggled off
+            }
+            return newItem;
+          }
+          return item;
+        });
+        return newContent;
+      });
+
+      if (voteChanged) {
+        toast({
+            title: "Спасибо за Ваш голос!",
+        });
       }
-      return { ...prevVotes, [itemId]: voteType };
+
+      return newVotes;
     });
-  }, []);
+  }, [toast]);
 
   const displayedContent = useMemo(() => {
-    if (activeSection === 'movies') return mockData.filter(item => item.type === 'movie');
-    if (activeSection === 'series') return mockData.filter(item => item.type === 'series');
-    return mockData;
-  }, [activeSection]);
+    if (activeSection === 'movies') return content.filter(item => item.type === 'movie');
+    if (activeSection === 'series') return content.filter(item => item.type === 'series');
+    return content;
+  }, [activeSection, content]);
+
+  const currentSelectedItem = useMemo(() => {
+      if (!selectedItem) return null;
+      return content.find(c => c.id === selectedItem.id) || null;
+  }, [selectedItem, content]);
+
 
   const handleSectionChange = useCallback((section: string) => {
     setActiveSection(section);
@@ -223,18 +262,18 @@ export default function Home() {
         <SidebarInset>
           <ScrollArea className="h-screen">
             <div className="p-4 md:p-8">
-              {selectedItem ? (
+              {currentSelectedItem ? (
                 <DetailedView
-                  item={selectedItem}
+                  item={currentSelectedItem}
                   onBack={() => setSelectedItem(null)}
                   onVote={handleVote}
-                  userVote={userVotes[selectedItem.id]}
+                  userVote={userVotes[currentSelectedItem.id]}
                 />
               ) : (
                 <>
                   <WelcomeBanner />
                   <h2 className="text-3xl font-bold tracking-tight capitalize mb-6 animate-in fade-in-50">
-                    {activeSection}
+                    {activeSection === 'home' ? 'Voting' : activeSection}
                   </h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 md:gap-6 animate-in fade-in-50">
                     {displayedContent.map(item => (
@@ -245,7 +284,7 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                  <TopVotedSection items={mockData} onItemClick={setSelectedItem} />
+                  <TopVotedSection items={content} onItemClick={setSelectedItem} />
                 </>
               )}
             </div>
