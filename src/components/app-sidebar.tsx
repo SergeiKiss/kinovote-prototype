@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 export function AppSidebar({
   activeSection,
@@ -53,7 +54,7 @@ export function AppSidebar({
               <SidebarMenuButton
                 onClick={() => onSectionChange(item.id)}
                 isActive={activeSection === item.id}
-                className={item.isNew ? 'animate-glow' : ''}
+                className={cn(item.isNew && activeSection === item.id && 'animate-glow')}
                 tooltip={{ children: item.label }}
               >
                 <item.icon />
