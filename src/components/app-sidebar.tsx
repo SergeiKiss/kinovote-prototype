@@ -26,7 +26,7 @@ export function AppSidebar({
     { id: 'home', label: 'Home', icon: Home },
     { id: 'movies', label: 'Movies', icon: Film },
     { id: 'series', label: 'Series', icon: Tv },
-    { id: 'voting', label: 'Voting', icon: Vote, isNew: true },
+    { id: 'voting', label: 'Voting', icon: Vote },
   ];
 
   return (
@@ -54,7 +54,7 @@ export function AppSidebar({
               <SidebarMenuButton
                 onClick={() => onSectionChange(item.id)}
                 isActive={activeSection === item.id}
-                className={cn(item.isNew && activeSection === item.id && 'animate-glow')}
+                className={cn(activeSection === item.id && 'animate-glow')}
                 tooltip={{ children: item.label }}
               >
                 <item.icon />
