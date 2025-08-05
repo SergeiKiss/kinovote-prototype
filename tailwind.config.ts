@@ -1,4 +1,4 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss';
 
 export default {
   darkMode: ['class'],
@@ -88,10 +88,21 @@ export default {
             height: '0',
           },
         },
+        glow: {
+          '0%, 100%': {
+            boxShadow:
+              '0 0 4px 0px hsl(var(--primary) / 0.6), 0 0 6px 0px hsl(var(--primary) / 0.4)',
+          },
+          '50%': {
+            boxShadow:
+              '0 0 12px 2px hsl(var(--primary) / 0.8), 0 0 16px 2px hsl(var(--primary) / 0.6)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        glow: 'glow 2.5s ease-in-out infinite',
       },
     },
   },
