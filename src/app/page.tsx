@@ -10,6 +10,7 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { ContentCard } from '@/components/content-card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { Card, CardContent } from '@/components/ui/card';
 
 export type ContentItem = {
   id: number;
@@ -125,6 +126,65 @@ function DetailedView({
   );
 }
 
+const WelcomeBanner = () => (
+  <Card className="mb-8 overflow-hidden bg-gradient-to-tr from-primary/20 to-primary/5 border-primary/20 animate-in fade-in-50">
+    <CardContent className="p-0">
+      <div className="flex flex-col md:flex-row items-center">
+        <div className="p-8 md:w-1/2">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground">Welcome to KinoVote</h2>
+          <p className="mt-4 text-lg text-foreground/70">
+            Your hub for discovering and rating the best movies and series. Vote for your favorites and see what's trending!
+          </p>
+          <Button size="lg" className="mt-6">
+            Start Voting
+          </Button>
+        </div>
+        <div className="relative md:w-1/2 h-64 md:h-auto md:self-stretch">
+          <Image
+            src="https://placehold.co/600x400"
+            alt="Cinema"
+            fill
+            className="object-cover"
+            data-ai-hint="cinema"
+          />
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const TopVotedSection = ({
+  items,
+  onItemClick,
+}: {
+  items: ContentItem[];
+  onItemClick: (item: ContentItem) => void;
+}) => {
+  const topItems = useMemo(() => {
+    return [...items]
+      .sort((a, b) => b.votes.up - a.votes.up)
+      .slice(0, 4);
+  }, [items]);
+
+  return (
+    <div className="mt-12 animate-in fade-in-50">
+      <h3 className="text-3xl font-bold tracking-tight mb-6">
+        Лидеры голосования
+      </h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        {topItems.map(item => (
+          <ContentCard
+            key={item.id}
+            item={item}
+            onClick={() => onItemClick(item)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState('voting');
   const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
@@ -170,6 +230,7 @@ export default function Home() {
                 />
               ) : (
                 <>
+                  <WelcomeBanner />
                   <h2 className="text-3xl font-bold tracking-tight capitalize mb-6 animate-in fade-in-50">
                     {activeSection}
                   </h2>
@@ -182,6 +243,7 @@ export default function Home() {
                       />
                     ))}
                   </div>
+                  <TopVotedSection items={mockData} onItemClick={setSelectedItem} />
                 </>
               )}
             </div>
