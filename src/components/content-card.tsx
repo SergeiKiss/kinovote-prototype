@@ -14,7 +14,7 @@ export function ContentCard({ item, onClick, layout = 'vertical' }: ContentCardP
   if (layout === 'horizontal') {
       return (
       <Card
-        className="w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:border-primary hover:shadow-2xl hover:shadow-primary/20 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background flex"
+        className="w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:border-primary hover:shadow-lg hover:shadow-primary/10 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background flex"
         onClick={onClick}
         onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick()}
         tabIndex={0}
@@ -31,18 +31,18 @@ export function ContentCard({ item, onClick, layout = 'vertical' }: ContentCardP
             data-ai-hint={item.aiHint}
           />
         </div>
-        <CardContent className="p-6 flex flex-col justify-between">
+        <CardContent className="p-4 flex flex-col justify-between">
           <div>
-            <CardTitle className="text-2xl font-bold">{item.title}</CardTitle>
-            <p className="text-muted-foreground mt-2 line-clamp-3">{item.description}</p>
+            <CardTitle className="text-lg font-bold">{item.title}</CardTitle>
+            <p className="text-muted-foreground mt-1 text-sm line-clamp-2">{item.description}</p>
           </div>
-          <div className="flex items-center space-x-6 text-foreground/70 mt-4">
-            <div className="flex items-center space-x-2">
-              <ThumbsUp className="h-5 w-5 text-green-500" />
+          <div className="flex items-center space-x-4 text-foreground/70 mt-3 text-sm">
+            <div className="flex items-center space-x-1.5">
+              <ThumbsUp className="h-4 w-4 text-green-500" />
               <span>{item.votes.up.toLocaleString()}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <ThumbsDown className="h-5 w-5 text-red-500" />
+            <div className="flex items-center space-x-1.5">
+              <ThumbsDown className="h-4 w-4 text-red-500" />
               <span>{item.votes.down.toLocaleString()}</span>
             </div>
           </div>
@@ -53,7 +53,7 @@ export function ContentCard({ item, onClick, layout = 'vertical' }: ContentCardP
     
   return (
     <Card
-      className="w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:scale-105 hover:border-primary hover:shadow-2xl hover:shadow-primary/20 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background"
+      className="w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:scale-105 hover:border-primary hover:shadow-lg hover:shadow-primary/10 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background"
       onClick={onClick}
       onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick()}
       tabIndex={0}

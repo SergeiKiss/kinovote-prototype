@@ -33,12 +33,12 @@ export function AppSidebar({
       collapsible="icon"
       className="border-r bg-card/40"
     >
-      <SidebarHeader className="p-4 h-[73px]">
+      <SidebarHeader className="p-4 h-[65px]">
         <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-primary self-center px-2 group-data-[collapsible=icon]:hidden">
+            <h1 className="text-2xl font-bold text-primary self-center px-2 group-data-[collapsible=icon]:hidden">
             КиноВоут
             </h1>
-            <h1 className="text-3xl font-bold text-primary self-center hidden group-data-[collapsible=icon]:block">
+            <h1 className="text-2xl font-bold text-primary self-center hidden group-data-[collapsible=icon]:block">
             КВ
             </h1>
             <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
@@ -46,16 +46,16 @@ export function AppSidebar({
       </SidebarHeader>
       <Separator />
       <SidebarContent>
-        <SidebarMenu className="p-4">
+        <SidebarMenu className="p-2">
           {menuItems.map(item => (
             <SidebarMenuItem key={item.id}>
               <SidebarMenuButton
                 onClick={() => onSectionChange(item.id)}
                 isActive={activeSection === item.id}
-                className={cn(activeSection === item.id && 'animate-glow', 'h-14 text-lg')}
+                className={cn(activeSection === item.id && 'animate-glow', 'h-12 text-base')}
                 tooltip={{ children: item.label }}
               >
-                <item.icon className="w-6 h-6" />
+                <item.icon className="w-5 h-5" />
                 <span>{item.label}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>

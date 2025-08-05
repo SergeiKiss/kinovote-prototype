@@ -89,18 +89,18 @@ function DetailedView({
 }) {
     const typeText = item.type === 'movie' ? 'Фильм' : 'Сериал';
   return (
-    <div className="animate-in fade-in-50 text-lg">
+    <div className="animate-in fade-in-50">
       <Button
         variant="ghost"
         onClick={onBack}
-        className="mb-6 text-xl text-foreground/80 hover:text-foreground"
+        className="mb-4 text-lg text-foreground/80 hover:text-foreground"
       >
-        <X className="mr-2 h-6 w-6" />
+        <X className="mr-2 h-5 w-5" />
         Назад к списку
       </Button>
-      <div className="relative md:flex md:space-x-12">
+      <div className="relative md:flex md:space-x-8">
         <div className="md:w-1/3 lg:w-1/4 flex-shrink-0">
-          <div className="aspect-[2/3] relative bg-card rounded-lg shadow-2xl shadow-black">
+          <div className="aspect-[2/3] relative bg-card rounded-lg shadow-lg shadow-black/30">
             <Image
               src={item.image}
               alt={`Постер для ${item.title}`}
@@ -111,33 +111,33 @@ function DetailedView({
             />
           </div>
         </div>
-        <div className="mt-8 md:mt-0 md:w-2/3">
-          <Badge variant="outline" className="mb-3 border-primary text-primary text-base">
+        <div className="mt-6 md:mt-0 md:w-2/3">
+          <Badge variant="outline" className="mb-2 border-primary text-primary">
             {typeText.toUpperCase()}
           </Badge>
-          <h2 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {item.title}
           </h2>
-          <p className="mt-6 text-xl text-foreground/70">{item.description}</p>
+          <p className="mt-4 text-base text-foreground/70">{item.description}</p>
           
-          <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-4 text-foreground/80">
+          <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-foreground/80">
               <div><strong className="font-semibold text-foreground">Жанр:</strong> {item.genre}</div>
               <div><strong className="font-semibold text-foreground">Страна:</strong> {item.country}</div>
               <div><strong className="font-semibold text-foreground">Режиссер:</strong> {item.director}</div>
               <div><strong className="font-semibold text-foreground">Актеры:</strong> {item.actors.join(', ')}</div>
           </div>
 
-          <div className="mt-10 flex items-center space-x-8">
-            <Button size="xl">
-              <PlayCircle className="mr-3 h-7 w-7" />
+          <div className="mt-8 flex items-center space-x-6">
+            <Button size="lg">
+              <PlayCircle className="mr-2 h-5 w-5" />
               Смотреть трейлер
             </Button>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  'rounded-full h-20 w-20',
+                  'rounded-full h-14 w-14',
                   userVote === 'up' && 'bg-primary/20 text-primary',
                   'disabled:opacity-50'
                 )}
@@ -145,13 +145,13 @@ function DetailedView({
                 aria-label="Голосовать за"
                 disabled={!!userVote}
               >
-                <ThumbsUp className="h-10 w-10" />
+                <ThumbsUp className="h-7 w-7" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  'rounded-full h-20 w-20',
+                  'rounded-full h-14 w-14',
                   userVote === 'down' && 'bg-destructive/20 text-destructive',
                   'disabled:opacity-50'
                 )}
@@ -159,25 +159,25 @@ function DetailedView({
                 aria-label="Голосовать против"
                 disabled={!!userVote}
               >
-                <ThumbsDown className="h-10 w-10" />
+                <ThumbsDown className="h-7 w-7" />
               </Button>
             </div>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="icon" className="h-12 w-12 shrink-0">
-                  <BarChart2 className="h-6 w-6" />
+                <Button variant="outline" size="icon" className="h-10 w-10 shrink-0">
+                  <BarChart2 className="h-5 w-5" />
                 </Button>
               </DialogTrigger>
               <StatisticsModal item={item} />
             </Dialog>
           </div>
-          <div className="mt-6 flex items-center space-x-8 text-foreground/70 text-xl">
-            <div className="flex items-center space-x-3">
-              <ThumbsUp className="h-7 w-7 text-green-500" />
+          <div className="mt-4 flex items-center space-x-6 text-foreground/70 text-base">
+            <div className="flex items-center space-x-2">
+              <ThumbsUp className="h-5 w-5 text-green-500" />
               <span>{item.votes.up.toLocaleString()}</span>
             </div>
-            <div className="flex items-center space-x-3">
-              <ThumbsDown className="h-7 w-7 text-red-500" />
+            <div className="flex items-center space-x-2">
+              <ThumbsDown className="h-5 w-5 text-red-500" />
               <span>{item.votes.down.toLocaleString()}</span>
             </div>
           </div>
@@ -188,19 +188,19 @@ function DetailedView({
 }
 
 const WelcomeBanner = ({ onCTAClick }: { onCTAClick: () => void }) => (
-  <Card className="mb-12 overflow-hidden bg-gradient-to-tr from-primary/20 to-primary/5 border-primary/20 animate-in fade-in-50">
+  <Card className="mb-8 overflow-hidden bg-gradient-to-tr from-primary/20 to-primary/5 border-primary/20 animate-in fade-in-50">
     <CardContent className="p-0">
       <div className="flex flex-col md:flex-row items-center">
-        <div className="p-10 md:w-1/2">
-          <h2 className="text-5xl font-bold tracking-tight text-foreground">Добро пожаловать в КиноВоут</h2>
-          <p className="mt-6 text-2xl text-foreground/70">
+        <div className="p-8 md:w-1/2">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground">Добро пожаловать в КиноВоут</h2>
+          <p className="mt-4 text-lg text-foreground/70">
             Ваш центр для открытия и оценки лучших фильмов и сериалов. Голосуйте за своих фаворитов и смотрите, что в тренде!
           </p>
-          <Button size="xl" className="mt-8" onClick={onCTAClick}>
+          <Button size="lg" className="mt-6" onClick={onCTAClick}>
             Начать голосование
           </Button>
         </div>
-        <div className="relative md:w-1/2 h-80 md:h-auto md:self-stretch bg-card">
+        <div className="relative md:w-1/2 h-64 md:h-auto md:self-stretch bg-card">
           <Image
             src="https://placehold.co/600x400"
             alt="Кинотеатр"
@@ -228,11 +228,11 @@ const TopVotedSection = ({
   }, [items]);
 
   return (
-    <div className="mt-16 animate-in fade-in-50">
-      <h3 className="text-4xl font-bold tracking-tight mb-8">
+    <div className="mt-12 animate-in fade-in-50">
+      <h3 className="text-2xl font-bold tracking-tight mb-6">
         Топ-3 премьеры
       </h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {topItems.map(item => (
           <ContentCard
             key={item.id}
@@ -342,7 +342,7 @@ export default function Home() {
         />
         <SidebarInset>
           <ScrollArea className="h-screen">
-            <div className="p-8 md:p-12">
+            <div className="p-6 md:p-8">
               {currentSelectedItem ? (
                 <DetailedView
                   item={currentSelectedItem}
@@ -361,10 +361,10 @@ export default function Home() {
                   
                   {activeSection !== 'home' && (
                     <>
-                      <h2 className="text-5xl font-bold tracking-tight capitalize mb-10 animate-in fade-in-50">
+                      <h2 className="text-3xl font-bold tracking-tight capitalize mb-8 animate-in fade-in-50">
                         {getSectionTitle(activeSection)}
                       </h2>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 animate-in fade-in-50">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 animate-in fade-in-50">
                         {displayedContent.map(item => (
                           <ContentCard
                             key={item.id}
