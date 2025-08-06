@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import Image from 'next/image';
-import { ThumbsUp, ThumbsDown, PlayCircle, X, BarChart2 } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, PlayCircle, X, BarChart2, Star, Clapperboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
@@ -10,7 +10,7 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { ContentCard } from '@/components/content-card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import {
   Dialog,
@@ -246,6 +246,62 @@ const TopVotedSection = ({
   );
 };
 
+const VotingPage = ({
+  content,
+  onSectionChange,
+  onItemClick,
+}: {
+  content: ContentItem[];
+  onSectionChange: (section: string) => void;
+  onItemClick: (item: ContentItem) => void;
+}) => {
+  return (
+    <div className="animate-in fade-in-50">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <Card
+          className="bg-card hover:bg-accent/50 transition-colors cursor-pointer"
+          onClick={() => onSectionChange('movies')}
+        >
+          <CardContent className="p-6 flex items-center space-x-4">
+            <Clapperboard className="w-10 h-10 text-primary" />
+            <div>
+              <CardTitle className="text-xl">Топы фильмов</CardTitle>
+              <p className="text-muted-foreground">Лучшие фильмы по мнению зрителей</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card
+          className="bg-card hover:bg-accent/50 transition-colors cursor-pointer"
+          onClick={() => onSectionChange('series')}
+        >
+          <CardContent className="p-6 flex items-center space-x-4">
+            <Star className="w-10 h-10 text-primary" />
+            <div>
+              <CardTitle className="text-xl">Топы сериалов</CardTitle>
+              <p className="text-muted-foreground">Самые популярные сериалы</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
+      <div className="relative">
+        <div className="flex overflow-x-auto space-x-6 pb-4">
+          {content.map(item => (
+            <div key={item.id} className="min-w-[200px] md:min-w-[250px] flex-shrink-0">
+               <ContentCard
+                  item={item}
+                  onClick={() => onItemClick(item)}
+                  layout="vertical"
+                  className="w-full"
+                />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function Home() {
   const [content, setContent] = useState<ContentItem[]>(initialData);
@@ -302,7 +358,8 @@ export default function Home() {
   const displayedContent = useMemo(() => {
     if (activeSection === 'movies') return content.filter(item => item.type === 'movie');
     if (activeSection === 'series') return content.filter(item => item.type === 'series');
-    if (activeSection === 'voting' || activeSection === 'home') return content;
+    if (activeSection === 'home') return content;
+    // For 'voting', we show all content in the carousel
     return [];
   }, [activeSection, content]);
 
@@ -358,8 +415,15 @@ export default function Home() {
                      <TopVotedSection items={content} onItemClick={setSelectedItem} />
                     </>
                   )}
+                  {activeSection === 'voting' && (
+                    <VotingPage 
+                      content={content} 
+                      onSectionChange={handleSectionChange}
+                      onItemClick={setSelectedItem}
+                    />
+                  )}
                   
-                  {activeSection !== 'home' && (
+                  {activeSection !== 'home' && activeSection !== 'voting' && (
                     <>
                       <h2 className="text-3xl font-bold tracking-tight capitalize mb-8 animate-in fade-in-50">
                         {getSectionTitle(activeSection)}

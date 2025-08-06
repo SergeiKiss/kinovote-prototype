@@ -4,22 +4,26 @@ import type { ContentItem } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
-interface ContentCardProps {
+interface ContentCardProps extends React.HTMLAttributes<HTMLDivElement> {
   item: ContentItem;
   onClick: () => void;
   layout?: 'vertical' | 'horizontal';
 }
 
-export function ContentCard({ item, onClick, layout = 'vertical' }: ContentCardProps) {
+export function ContentCard({ item, onClick, layout = 'vertical', className, ...props }: ContentCardProps) {
   if (layout === 'horizontal') {
       return (
       <Card
-        className="w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:border-primary hover:shadow-lg hover:shadow-primary/10 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background flex"
+        className={cn(
+          "w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:border-primary hover:shadow-lg hover:shadow-primary/10 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background flex",
+          className,
+        )}
         onClick={onClick}
         onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick()}
         tabIndex={0}
         role="button"
         aria-label={`Показать детали для ${item.title}`}
+        {...props}
       >
         <div className="aspect-[2/3] relative bg-card rounded-l-md w-1/3 flex-shrink-0">
           <Image
@@ -53,12 +57,16 @@ export function ContentCard({ item, onClick, layout = 'vertical' }: ContentCardP
     
   return (
     <Card
-      className="w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:scale-105 hover:border-primary hover:shadow-lg hover:shadow-primary/10 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background"
+      className={cn(
+        "w-full overflow-hidden border-2 border-transparent bg-card cursor-pointer transition-all duration-300 transform-gpu hover:scale-105 hover:border-primary hover:shadow-lg hover:shadow-primary/10 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background",
+        className,
+      )}
       onClick={onClick}
       onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick()}
       tabIndex={0}
       role="button"
       aria-label={`Показать детали для ${item.title}`}
+      {...props}
     >
       <CardContent className="p-0">
         <div className="aspect-[2/3] relative bg-card rounded-md">

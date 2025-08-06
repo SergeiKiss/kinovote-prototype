@@ -1,6 +1,6 @@
 'use client';
 
-import { Film, Home, Tv, Vote } from 'lucide-react';
+import { Film, Home, Tv, Vote, Clapperboard } from 'lucide-react';
 import {
   Sidebar,
   SidebarHeader,
@@ -35,12 +35,12 @@ export function AppSidebar({
     >
       <SidebarHeader className="p-4 h-[65px]">
         <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary self-center px-2 group-data-[collapsible=icon]:hidden">
-            КиноВоут
-            </h1>
-            <h1 className="text-2xl font-bold text-primary self-center hidden group-data-[collapsible=icon]:block">
-            КВ
-            </h1>
+            <div className='flex items-center gap-2'>
+              <Clapperboard className="w-8 h-8 text-primary" />
+              <h1 className="text-2xl font-bold text-primary self-center group-data-[collapsible=icon]:hidden">
+                КиноВоут
+              </h1>
+            </div>
             <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
         </div>
       </SidebarHeader>
