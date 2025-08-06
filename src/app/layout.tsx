@@ -59,7 +59,9 @@ export default function RootLayout({
             <img src="https://mc.yandex.ru/watch/103601738" style={{position:'absolute', left:'-9999px'}} alt="" />
           </div>
         </noscript>
-        <Metrika />
+        <React.Suspense fallback={null}>
+          <Metrika />
+        </React.Suspense>
         {children}
         <Toaster />
       </body>
