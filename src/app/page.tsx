@@ -257,33 +257,6 @@ const VotingPage = ({
 }) => {
   return (
     <div className="animate-in fade-in-50">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <Card
-          className="bg-card hover:bg-accent/50 transition-colors cursor-pointer"
-          onClick={() => onSectionChange('movies')}
-        >
-          <CardContent className="p-6 flex items-center space-x-4">
-            <Clapperboard className="w-10 h-10 text-primary" />
-            <div>
-              <CardTitle className="text-xl">Топы фильмов</CardTitle>
-              <p className="text-muted-foreground">Лучшие фильмы по мнению зрителей</p>
-            </div>
-          </CardContent>
-        </Card>
-        <Card
-          className="bg-card hover:bg-accent/50 transition-colors cursor-pointer"
-          onClick={() => onSectionChange('series')}
-        >
-          <CardContent className="p-6 flex items-center space-x-4">
-            <Star className="w-10 h-10 text-primary" />
-            <div>
-              <CardTitle className="text-xl">Топы сериалов</CardTitle>
-              <p className="text-muted-foreground">Самые популярные сериалы</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
       <div className="relative">
         <div className="flex overflow-x-auto space-x-6 pb-4">
