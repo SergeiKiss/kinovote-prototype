@@ -129,7 +129,6 @@ export default function VotingSection({
         </div>
       </div>
       <div className="flex-grow">
-        <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <SimpleSlider>
           {content.map((item) => (
             <ContentCard key={item.id} item={item} onClick={() => onItemClick(item)} layout="vertical" />
