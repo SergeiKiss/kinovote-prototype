@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { ContentCard } from '@/components/content-card';
 import { Film, Tv } from 'lucide-react';
@@ -38,7 +38,7 @@ export default function VotingSection({
     return Array.from(set);
   }, [content]);
 
-  const [selectedGenre, setSelectedGenre] = React.useState<string>('Все жанры');
+  const [selectedGenre, setSelectedGenre] = useState<string>('Все жанры');
 
   const filtered = useMemo(() => {
     return selectedGenre === 'Все жанры'
