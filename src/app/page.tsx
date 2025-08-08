@@ -301,12 +301,12 @@ const VotingPage = ({
         </div>
       </div>
       <div className="flex-grow pt-8 min-h-0 px-6 md:px-8 flex flex-col">
-        <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-6 flex-shrink-0">Карточка нового контента</h2>
         <div className="relative flex-grow min-h-0">
           <ScrollArea className="absolute inset-0">
             <div className="flex space-x-6 pb-4">
               {content.map(item => (
-                <div key={item.id} className="min-w-[200px] md:min-w-[250px] flex-shrink-0">
+                <div key={item.id} className="w-[250px] flex-shrink-0">
                   <ContentCard
                       item={item}
                       onClick={() => onItemClick(item)}
