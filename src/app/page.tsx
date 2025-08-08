@@ -249,13 +249,44 @@ const TopVotedSection = ({
 const VotingPage = ({
   content,
   onItemClick,
+  onSectionChange,
 }: {
   content: ContentItem[];
   onItemClick: (item: ContentItem) => void;
+  onSectionChange: (section: string) => void;
 }) => {
   return (
-    <div className="animate-in fade-in-50 h-full flex flex-col">
-      <div className="flex-grow pt-8">
+    <div className="animate-in fade-in-50 h-full flex flex-col p-6 md:p-8">
+       <div className="flex-shrink-0">
+            <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
+            <div className="flex flex-wrap gap-6">
+                <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('movies')}>
+                    <div>
+                        <div className="flex items-center gap-2 mb-2">
+                            <Film className="w-6 h-6 text-primary" />
+                            <h3 className="text-lg font-semibold">Топы фильмов</h3>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Самые популярные фильмы недели</p>
+                    </div>
+                    <div className="text-right mt-4">
+                        <Button variant="ghost" size="sm">Перейти</Button>
+                    </div>
+                </Card>
+                <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('series')}>
+                    <div>
+                        <div className="flex items-center gap-2 mb-2">
+                            <Tv className="w-6 h-6 text-primary" />
+                            <h3 className="text-lg font-semibold">Топы сериалов</h3>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Самые популярные сериалы недели</p>
+                    </div>
+                    <div className="text-right mt-4">
+                        <Button variant="ghost" size="sm">Перейти</Button>
+                    </div>
+                </Card>
+            </div>
+       </div>
+      <div className="flex-grow pt-8 min-h-0">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <div className="relative">
           <div className="flex overflow-x-auto space-x-6 pb-4">
@@ -372,46 +403,17 @@ export default function Home() {
         />
         <SidebarInset>
           <div className="flex flex-col h-screen">
-            {activeSection === 'voting' && !selectedItem && (
-               <div className="p-6 md:p-8 z-10 bg-background">
-                 <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
-                 <div className="flex flex-wrap gap-6">
-                   <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => handleSectionChange('movies')}>
-                     <div>
-                       <div className="flex items-center gap-2 mb-2">
-                         <Film className="w-6 h-6 text-primary" />
-                         <h3 className="text-lg font-semibold">Топы фильмов</h3>
-                       </div>
-                       <p className="text-sm text-muted-foreground">Самые популярные фильмы недели</p>
-                     </div>
-                     <div className="text-right mt-4">
-                       <Button variant="ghost" size="sm">Перейти</Button>
-                     </div>
-                   </Card>
-                   <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => handleSectionChange('series')}>
-                     <div>
-                       <div className="flex items-center gap-2 mb-2">
-                         <Tv className="w-6 h-6 text-primary" />
-                         <h3 className="text-lg font-semibold">Топы сериалов</h3>
-                       </div>
-                       <p className="text-sm text-muted-foreground">Самые популярные сериалы недели</p>
-                     </div>
-                       <div className="text-right mt-4">
-                         <Button variant="ghost" size="sm">Перейти</Button>
-                       </div>
-                   </Card>
-                 </div>
-               </div>
-            )}
             <ScrollArea className="h-full flex-grow">
-              <div className="p-6 md:p-8">
+              <div className={cn(activeSection !== 'voting' && "p-6 md:p-8")}>
                 {currentSelectedItem ? (
-                  <DetailedView
-                    item={currentSelectedItem}
-                    onBack={() => setSelectedItem(null)}
-                    onVote={handleVote}
-                    userVote={userVotes[currentSelectedItem.id]}
-                  />
+                  <div className="p-6 md:p-8">
+                    <DetailedView
+                        item={currentSelectedItem}
+                        onBack={() => setSelectedItem(null)}
+                        onVote={handleVote}
+                        userVote={userVotes[currentSelectedItem.id]}
+                    />
+                  </div>
                 ) : (
                   <>
                     {activeSection === 'home' && (
@@ -424,6 +426,7 @@ export default function Home() {
                       <VotingPage 
                         content={content} 
                         onItemClick={setSelectedItem}
+                        onSectionChange={handleSectionChange}
                       />
                     )}
                     
