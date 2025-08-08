@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ContentCard } from '@/components/content-card';
@@ -12,7 +12,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
+import { Slider } from '@/components/ui/slider';
 
 export default function VotingSection({
   content,
@@ -25,6 +27,26 @@ export default function VotingSection({
 }) {
   const goMovies = useCallback(() => onNavigate('movies'), [onNavigate]);
   const goSeries = useCallback(() => onNavigate('series'), [onNavigate]);
+
+  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [slideCount, setSlideCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    const updateFromApi = () => setSelectedIndex(api.selectedScrollSnap());
+    const updateCount = () => setSlideCount(api.scrollSnapList().length);
+    updateCount();
+    updateFromApi();
+    api.on('select', updateFromApi);
+    api.on('reInit', () => {
+      updateCount();
+      updateFromApi();
+    });
+    return () => {
+      api.off('select', updateFromApi);
+    };
+  }, [api]);
 
   return (
     <div className="flex flex-col h-full animate-in fade-in-50 p-6 md:p-8">
@@ -66,12 +88,12 @@ export default function VotingSection({
       <div className="flex-grow">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <div className="relative">
-          <Carousel opts={{ align: 'start' }} className="w-full">
+          <Carousel opts={{ align: 'center' }} setApi={setApi} className="w-full">
             <CarouselContent>
               {content.map((item) => (
                 <CarouselItem
                   key={item.id}
-                  className="basis-2/3 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6"
+                  className="basis-full sm:basis-3/4 md:basis-2/3 lg:basis-1/2 xl:basis-2/5 2xl:basis-2/5"
                 >
                   <ContentCard item={item} onClick={() => onItemClick(item)} layout="vertical" />
                 </CarouselItem>
@@ -81,6 +103,19 @@ export default function VotingSection({
             <CarouselNext className="hidden sm:flex" />
           </Carousel>
         </div>
+        {slideCount > 1 && (
+          <div className="mt-6">
+            <Slider
+              min={0}
+              max={Math.max(slideCount - 1, 0)}
+              step={1}
+              value={[selectedIndex]}
+              onValueChange={(v) => setSelectedIndex(v[0] ?? 0)}
+              onValueCommit={(v) => api?.scrollTo(v[0] ?? 0)}
+              aria-label="Позиция карусели"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
