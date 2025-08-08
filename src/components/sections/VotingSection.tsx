@@ -67,7 +67,7 @@ export default function VotingSection({
               {content.map((item) => (
                 <div
                   key={item.id}
-                  className="snap-start shrink-0 w-[70vw] sm:w-[55vw] md:w-[40vw] lg:w-[28vw] xl:w-[24vw] 2xl:w-[20vw]"
+                  className="snap-start shrink-0 w-[60vw] sm:w-[48vw] md:w-[34vw] lg:w-[24vw] xl:w-[20vw] 2xl:w-[16vw]"
                 >
                   <ContentCard
                     item={item}
