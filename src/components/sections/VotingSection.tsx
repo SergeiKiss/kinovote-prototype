@@ -6,13 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ContentCard } from '@/components/content-card';
 import { Film, Tv } from 'lucide-react';
 import { ContentItem } from '@/lib/types';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  // arrows/controls не используем — чистый свайп
-} from '@/components/ui/carousel';
-// без точек и кнопок — как в примере
+// Горизонтальная прокрутка на нативном скролле с snap
 
 export default function VotingSection({
   content,
@@ -68,20 +62,23 @@ export default function VotingSection({
       <div className="flex-grow">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <div className="relative">
-          <Carousel opts={{ align: 'start' }} className="w-full">
-            <CarouselContent>
+          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex gap-6 snap-x snap-mandatory">
               {content.map((item) => (
-                <CarouselItem
+                <div
                   key={item.id}
-                  className="basis-5/6 sm:basis-2/3 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/4"
+                  className="snap-start shrink-0 w-[70vw] sm:w-[55vw] md:w-[40vw] lg:w-[28vw] xl:w-[24vw] 2xl:w-[20vw]"
                 >
-                  <ContentCard item={item} onClick={() => onItemClick(item)} layout="vertical" />
-                </CarouselItem>
+                  <ContentCard
+                    item={item}
+                    onClick={() => onItemClick(item)}
+                    layout="vertical"
+                  />
+                </div>
               ))}
-            </CarouselContent>
-          </Carousel>
+            </div>
+          </div>
         </div>
-        {/* Без точек/кнопок — только свайп */}
       </div>
     </div>
   );
