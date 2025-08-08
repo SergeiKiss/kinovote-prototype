@@ -6,6 +6,13 @@ import { Button } from '@/components/ui/button';
 import { ContentCard } from '@/components/content-card';
 import { Film, Tv } from 'lucide-react';
 import { ContentItem } from '@/lib/types';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 export default function VotingSection({
   content,
@@ -58,10 +65,21 @@ export default function VotingSection({
       </div>
       <div className="flex-grow">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
-          {content.map((item) => (
-            <ContentCard key={item.id} item={item} onClick={() => onItemClick(item)} layout="vertical" />
-          ))}
+        <div className="relative">
+          <Carousel opts={{ align: 'start' }} className="w-full">
+            <CarouselContent>
+              {content.map((item) => (
+                <CarouselItem
+                  key={item.id}
+                  className="basis-2/3 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6"
+                >
+                  <ContentCard item={item} onClick={() => onItemClick(item)} layout="vertical" />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden sm:flex" />
+            <CarouselNext className="hidden sm:flex" />
+          </Carousel>
         </div>
       </div>
     </div>
