@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import Image from 'next/image';
-import { ThumbsUp, ThumbsDown, PlayCircle, X, BarChart2, Star, Clapperboard } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, PlayCircle, X, BarChart2, Star, Clapperboard, Film, Tv } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
@@ -255,8 +255,56 @@ const VotingPage = ({
   onSectionChange: (section: string) => void;
   onItemClick: (item: ContentItem) => void;
 }) => {
+  const topMovies = useMemo(() => {
+    return content
+      .filter((item) => item.type === 'movie')
+      .sort((a, b) => b.votes.up - a.votes.up)
+      .slice(0, 1);
+  }, [content]);
+
+  const topSeries = useMemo(() => {
+    return content
+      .filter((item) => item.type === 'series')
+      .sort((a, b) => b.votes.up - a.votes.up)
+      .slice(0, 1);
+  }, [content]);
+  
   return (
     <div className="animate-in fade-in-50">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {topMovies.map(item => (
+             <Card key={`top-movie-${item.id}`} className="flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('movies')}>
+                <div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <Film className="w-6 h-6 text-primary" />
+                        <h3 className="text-lg font-semibold">Топы фильмов</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Самые популярные фильмы недели</p>
+                </div>
+                <div className="text-right mt-4">
+                    <Button variant="ghost" size="sm">Перейти</Button>
+                </div>
+            </Card>
+          ))}
+           {topSeries.map(item => (
+             <Card key={`top-series-${item.id}`} className="flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('series')}>
+                <div>
+                    <div className="flex items-center gap-2 mb-2">
+                        <Tv className="w-6 h-6 text-primary" />
+                        <h3 className="text-lg font-semibold">Топы сериалов</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Самые популярные сериалы недели</p>
+                </div>
+                 <div className="text-right mt-4">
+                    <Button variant="ghost" size="sm">Перейти</Button>
+                </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+      
       <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
       <div className="relative">
         <div className="flex overflow-x-auto space-x-6 pb-4">
