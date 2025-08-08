@@ -256,10 +256,10 @@ const VotingPage = ({
   onSectionChange: (section: string) => void;
 }) => {
   return (
-    <div className="animate-in fade-in-50 h-full flex flex-col">
-      <div className="flex-shrink-0 p-6 md:p-8">
+    <div className="animate-in fade-in-50 p-6 md:p-8">
+      <div>
         <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
-        <div className="flex flex-wrap gap-6">
+        <div className="flex flex-wrap gap-6 mb-8">
           <Card
             className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer"
             onClick={() => onSectionChange('movies')}
@@ -300,23 +300,17 @@ const VotingPage = ({
           </Card>
         </div>
       </div>
-      <div className="flex-grow pt-8 min-h-0 px-6 md:px-8 flex flex-col">
-        <h2 className="text-2xl font-bold tracking-tight mb-6 flex-shrink-0">Карточка нового контента</h2>
-        <div className="relative flex-grow min-h-0">
-          <ScrollArea className="absolute inset-0">
-            <div className="flex space-x-6 pb-4">
-              {content.map(item => (
-                <div key={item.id} className="w-[250px] flex-shrink-0">
-                  <ContentCard
-                      item={item}
-                      onClick={() => onItemClick(item)}
-                      layout="vertical"
-                      className="w-full"
-                    />
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
+          {content.map(item => (
+            <ContentCard
+                key={item.id}
+                item={item}
+                onClick={() => onItemClick(item)}
+                layout="vertical"
+              />
+          ))}
         </div>
       </div>
     </div>
@@ -433,11 +427,13 @@ export default function Home() {
               ) : (
                 <>
                   {activeSection === 'voting' ? (
-                    <VotingPage 
-                      content={content} 
-                      onItemClick={setSelectedItem}
-                      onSectionChange={handleSectionChange}
-                    />
+                     <ScrollArea className="h-full flex-grow">
+                      <VotingPage 
+                        content={content} 
+                        onItemClick={setSelectedItem}
+                        onSectionChange={handleSectionChange}
+                      />
+                    </ScrollArea>
                   ) : (
                     <ScrollArea className="h-full flex-grow">
                       <div className="p-6 md:p-8">
