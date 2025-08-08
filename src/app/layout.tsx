@@ -32,7 +32,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          'font-body antialiased bg-background text-foreground overflow-x-hidden'
+          'font-body antialiased bg-background text-foreground overflow-x-hidden overflow-hidden'
         )}
       >
         <Script id="yandex-metrika" strategy="afterInteractive">
