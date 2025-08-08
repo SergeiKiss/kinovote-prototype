@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { ContentCard } from '@/components/content-card';
 import { Film, Tv, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { ContentItem } from '@/lib/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-// Горизонтальная прокрутка на нативном скролле с snap
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel';
 
 export default function VotingSection({
   content,
@@ -37,14 +37,29 @@ export default function VotingSection({
       : content.filter((c) => c.genre === selectedGenre);
   }, [content, selectedGenre]);
 
-  const topMovies = useMemo(
-    () => [...filtered].filter(c => c.type === 'movie').sort((a, b) => b.votes.up - a.votes.up).slice(0, 3),
+  const baseTopMovies = useMemo(
+    () => [...content].filter((c) => c.type === 'movie').sort((a, b) => b.votes.up - a.votes.up).slice(0, 3),
+    [content]
+  );
+  const baseTopSeries = useMemo(
+    () => [...content].filter((c) => c.type === 'series').sort((a, b) => b.votes.up - a.votes.up).slice(0, 3),
+    [content]
+  );
+
+  const filteredMovies = useMemo(
+    () => [...filtered].filter((c) => c.type === 'movie').sort((a, b) => b.votes.up - a.votes.up).slice(0, 3),
     [filtered]
   );
-  const topSeries = useMemo(
-    () => [...filtered].filter(c => c.type === 'series').sort((a, b) => b.votes.up - a.votes.up).slice(0, 3),
+  const filteredSeries = useMemo(
+    () => [...filtered].filter((c) => c.type === 'series').sort((a, b) => b.votes.up - a.votes.up).slice(0, 3),
     [filtered]
   );
+
+  const useMoviesFallback = filteredMovies.length === 0 && selectedGenre !== 'Все жанры';
+  const useSeriesFallback = filteredSeries.length === 0 && selectedGenre !== 'Все жанры';
+
+  const topMovies = useMoviesFallback ? baseTopMovies : filteredMovies;
+  const topSeries = useSeriesFallback ? baseTopSeries : filteredSeries;
 
   return (
     <div className="flex flex-col h-full animate-in fade-in-50 p-6 md:p-8">
@@ -64,8 +79,8 @@ export default function VotingSection({
             </Select>
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 justify-start">
-          <Card className="p-4 bg-card max-w-xl">
+        <div className="flex flex-wrap gap-6 mb-8">
+          <Card className="p-4 bg-card w-[500px]">
             <div className="flex items-center gap-2 mb-4">
               <Film className="w-6 h-6 text-primary" />
               <h3 className="text-lg font-semibold">Топ-3 фильмов</h3>
@@ -88,7 +103,7 @@ export default function VotingSection({
               ))}
             </ul>
           </Card>
-          <Card className="p-4 bg-card max-w-xl">
+          <Card className="p-4 bg-card w-[500px]">
             <div className="flex items-center gap-2 mb-4">
               <Tv className="w-6 h-6 text-primary" />
               <h3 className="text-lg font-semibold">Топ-3 сериалов</h3>
@@ -124,6 +139,8 @@ export default function VotingSection({
                 </CarouselItem>
               ))}
             </CarouselContent>
+            <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2" />
+            <CarouselNext className="right-2 top-1/2 -translate-y-1/2" />
           </Carousel>
         </div>
       </div>
