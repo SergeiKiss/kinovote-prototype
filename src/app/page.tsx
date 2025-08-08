@@ -248,58 +248,28 @@ const TopVotedSection = ({
 
 const VotingPage = ({
   content,
-  onSectionChange,
   onItemClick,
 }: {
   content: ContentItem[];
-  onSectionChange: (section: string) => void;
   onItemClick: (item: ContentItem) => void;
 }) => {
   return (
-    <div className="animate-in fade-in-50">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
-        <div className="flex flex-wrap gap-6">
-          <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('movies')}>
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Film className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">Топы фильмов</h3>
+    <div className="animate-in fade-in-50 h-full flex flex-col">
+      <div className="pt-24">
+        <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
+        <div className="relative">
+          <div className="flex overflow-x-auto space-x-6 pb-4">
+            {content.map(item => (
+              <div key={item.id} className="min-w-[200px] md:min-w-[250px] flex-shrink-0">
+                 <ContentCard
+                    item={item}
+                    onClick={() => onItemClick(item)}
+                    layout="vertical"
+                    className="w-full"
+                  />
               </div>
-              <p className="text-sm text-muted-foreground">Самые популярные фильмы недели</p>
-            </div>
-            <div className="text-right mt-4">
-              <Button variant="ghost" size="sm">Перейти</Button>
-            </div>
-          </Card>
-          <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('series')}>
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Tv className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-semibold">Топы сериалов</h3>
-              </div>
-              <p className="text-sm text-muted-foreground">Самые популярные сериалы недели</p>
-            </div>
-              <div className="text-right mt-4">
-                <Button variant="ghost" size="sm">Перейти</Button>
-              </div>
-          </Card>
-        </div>
-      </div>
-      
-      <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
-      <div className="relative">
-        <div className="flex overflow-x-auto space-x-6 pb-4">
-          {content.map(item => (
-            <div key={item.id} className="min-w-[200px] md:min-w-[250px] flex-shrink-0">
-               <ContentCard
-                  item={item}
-                  onClick={() => onItemClick(item)}
-                  layout="vertical"
-                  className="w-full"
-                />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -401,52 +371,84 @@ export default function Home() {
           onSectionChange={handleSectionChange}
         />
         <SidebarInset>
-          <ScrollArea className="h-screen">
-            <div className="p-6 md:p-8">
-              {currentSelectedItem ? (
-                <DetailedView
-                  item={currentSelectedItem}
-                  onBack={() => setSelectedItem(null)}
-                  onVote={handleVote}
-                  userVote={userVotes[currentSelectedItem.id]}
-                />
-              ) : (
-                <>
-                  {activeSection === 'home' && (
-                    <>
-                     <WelcomeBanner onCTAClick={() => handleSectionChange('voting')} />
-                     <TopVotedSection items={content} onItemClick={setSelectedItem} />
-                    </>
-                  )}
-                  {activeSection === 'voting' && (
-                    <VotingPage 
-                      content={content} 
-                      onSectionChange={handleSectionChange}
-                      onItemClick={setSelectedItem}
-                    />
-                  )}
-                  
-                  {activeSection !== 'home' && activeSection !== 'voting' && (
-                    <>
-                      <h2 className="text-3xl font-bold tracking-tight capitalize mb-8 animate-in fade-in-50">
-                        {getSectionTitle(activeSection)}
-                      </h2>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 animate-in fade-in-50">
-                        {displayedContent.map(item => (
-                          <ContentCard
-                            key={item.id}
-                            item={item}
-                            onClick={() => setSelectedItem(item)}
-                            layout="vertical"
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </>
-              )}
-            </div>
-          </ScrollArea>
+          <div className="relative h-screen">
+            {activeSection === 'voting' && !selectedItem && (
+               <div className="absolute top-0 left-0 right-0 p-6 md:p-8 z-10 bg-background">
+                 <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
+                 <div className="flex flex-wrap gap-6">
+                   <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => handleSectionChange('movies')}>
+                     <div>
+                       <div className="flex items-center gap-2 mb-2">
+                         <Film className="w-6 h-6 text-primary" />
+                         <h3 className="text-lg font-semibold">Топы фильмов</h3>
+                       </div>
+                       <p className="text-sm text-muted-foreground">Самые популярные фильмы недели</p>
+                     </div>
+                     <div className="text-right mt-4">
+                       <Button variant="ghost" size="sm">Перейти</Button>
+                     </div>
+                   </Card>
+                   <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => handleSectionChange('series')}>
+                     <div>
+                       <div className="flex items-center gap-2 mb-2">
+                         <Tv className="w-6 h-6 text-primary" />
+                         <h3 className="text-lg font-semibold">Топы сериалов</h3>
+                       </div>
+                       <p className="text-sm text-muted-foreground">Самые популярные сериалы недели</p>
+                     </div>
+                       <div className="text-right mt-4">
+                         <Button variant="ghost" size="sm">Перейти</Button>
+                       </div>
+                   </Card>
+                 </div>
+               </div>
+            )}
+            <ScrollArea className="h-full">
+              <div className={cn("p-6 md:p-8", activeSection === 'voting' && !selectedItem && "pt-0")}>
+                {currentSelectedItem ? (
+                  <DetailedView
+                    item={currentSelectedItem}
+                    onBack={() => setSelectedItem(null)}
+                    onVote={handleVote}
+                    userVote={userVotes[currentSelectedItem.id]}
+                  />
+                ) : (
+                  <>
+                    {activeSection === 'home' && (
+                      <>
+                       <WelcomeBanner onCTAClick={() => handleSectionChange('voting')} />
+                       <TopVotedSection items={content} onItemClick={setSelectedItem} />
+                      </>
+                    )}
+                    {activeSection === 'voting' && (
+                      <VotingPage 
+                        content={content} 
+                        onItemClick={setSelectedItem}
+                      />
+                    )}
+                    
+                    {activeSection !== 'home' && activeSection !== 'voting' && (
+                      <>
+                        <h2 className="text-3xl font-bold tracking-tight capitalize mb-8 animate-in fade-in-50">
+                          {getSectionTitle(activeSection)}
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 animate-in fade-in-50">
+                          {displayedContent.map(item => (
+                            <ContentCard
+                              key={item.id}
+                              item={item}
+                              onClick={() => setSelectedItem(item)}
+                              layout="vertical"
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
         </SidebarInset>
       </div>
     </SidebarProvider>
