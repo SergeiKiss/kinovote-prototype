@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
-import type { ContentItem } from '@/app/page';
+import { ContentItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
