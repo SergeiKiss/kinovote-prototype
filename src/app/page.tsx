@@ -259,8 +259,8 @@ const VotingPage = ({
     <div className="animate-in fade-in-50">
       <div className="mb-8">
         <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <Card className="flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('movies')}>
+        <div className="flex flex-wrap gap-6">
+          <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('movies')}>
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Film className="w-6 h-6 text-primary" />
@@ -272,7 +272,7 @@ const VotingPage = ({
               <Button variant="ghost" size="sm">Перейти</Button>
             </div>
           </Card>
-          <Card className="flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('series')}>
+          <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => onSectionChange('series')}>
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Tv className="w-6 h-6 text-primary" />
