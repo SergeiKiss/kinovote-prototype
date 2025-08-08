@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { ContentCard } from '@/components/content-card';
+import { SimpleSlider } from '@/components/simple-slider';
 import { Film, Tv, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { ContentItem } from '@/lib/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel';
+// Карусель удалена — используем статичную сетку
 
 export default function VotingSection({
   content,
@@ -130,19 +130,11 @@ export default function VotingSection({
       </div>
       <div className="flex-grow">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
-        <div className="relative">
-          <Carousel opts={{ align: 'start' }} className="w-full">
-            <CarouselContent>
-              {content.map((item) => (
-                <CarouselItem key={item.id} className="basis-[60vw] sm:basis-[48vw] md:basis-[34vw] lg:basis-[24vw] xl:basis-[20vw] 2xl:basis-[16vw]">
-                  <ContentCard item={item} onClick={() => onItemClick(item)} layout="vertical" />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-2 top-1/2 -translate-y-1/2" />
-            <CarouselNext className="right-2 top-1/2 -translate-y-1/2" />
-          </Carousel>
-        </div>
+        <SimpleSlider>
+          {content.map((item) => (
+            <ContentCard key={item.id} item={item} onClick={() => onItemClick(item)} layout="vertical" />
+          ))}
+        </SimpleSlider>
       </div>
     </div>
   );
