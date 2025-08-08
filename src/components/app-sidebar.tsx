@@ -31,7 +31,7 @@ export function AppSidebar({
     <Sidebar
       variant="sidebar"
       collapsible="icon"
-      className="border-r bg-card/40"
+      className="border-r bg-card"
     >
       <SidebarHeader className="p-4 h-[65px]">
         <div className="flex items-center justify-between">
