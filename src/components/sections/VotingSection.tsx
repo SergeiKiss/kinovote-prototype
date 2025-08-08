@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { ContentCard } from '@/components/content-card';
-import { Film, Tv } from 'lucide-react';
+import { Film, Tv, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { ContentItem } from '@/lib/types';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 // Горизонтальная прокрутка на нативном скролле с snap
 
 export default function VotingSection({
@@ -20,17 +21,7 @@ export default function VotingSection({
   const goMovies = useCallback(() => onNavigate('movies'), [onNavigate]);
   const goSeries = useCallback(() => onNavigate('series'), [onNavigate]);
 
-  // интерфейс без контролов — все свайпом/скроллом
-  const scrollerRef = useRef<HTMLDivElement | null>(null);
-  const onWheelHorizontal = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-    // конвертируем вертикальный скролл в горизонтальный
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      scroller.scrollLeft += e.deltaY;
-    }
-  }, []);
+  // Карусель на Embla: свайп/drag по умолчанию
 
   const genres = useMemo(() => {
     const set = new Set<string>(['Все жанры']);
@@ -73,54 +64,67 @@ export default function VotingSection({
             </Select>
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card className="p-4 bg-card">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 justify-start">
+          <Card className="p-4 bg-card max-w-xl">
             <div className="flex items-center gap-2 mb-4">
               <Film className="w-6 h-6 text-primary" />
               <h3 className="text-lg font-semibold">Топ-3 фильмов</h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {topMovies.map((item) => (
-                <ContentCard key={item.id} item={item} onClick={() => onItemClick(item)} layout="horizontal" />
+            <ul className="space-y-3">
+              {topMovies.map((item, idx) => (
+                <li key={item.id} className="flex items-start gap-3">
+                  <div className="text-sm w-5 text-muted-foreground">{idx + 1}.</div>
+                  <div className="flex-1">
+                    <div className="font-medium leading-tight cursor-pointer hover:underline" onClick={() => onItemClick(item)}>
+                      {item.title}
+                    </div>
+                    <div className="text-xs text-muted-foreground line-clamp-1">{item.description}</div>
+                    <div className="mt-2 flex items-center gap-4 text-xs text-foreground/70">
+                      <span className="inline-flex items-center gap-1"><ThumbsUp className="h-3.5 w-3.5 text-green-500" />{item.votes.up.toLocaleString()}</span>
+                      <span className="inline-flex items-center gap-1"><ThumbsDown className="h-3.5 w-3.5 text-red-500" />{item.votes.down.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </Card>
-          <Card className="p-4 bg-card">
+          <Card className="p-4 bg-card max-w-xl">
             <div className="flex items-center gap-2 mb-4">
               <Tv className="w-6 h-6 text-primary" />
               <h3 className="text-lg font-semibold">Топ-3 сериалов</h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {topSeries.map((item) => (
-                <ContentCard key={item.id} item={item} onClick={() => onItemClick(item)} layout="horizontal" />
+            <ul className="space-y-3">
+              {topSeries.map((item, idx) => (
+                <li key={item.id} className="flex items-start gap-3">
+                  <div className="text-sm w-5 text-muted-foreground">{idx + 1}.</div>
+                  <div className="flex-1">
+                    <div className="font-medium leading-tight cursor-pointer hover:underline" onClick={() => onItemClick(item)}>
+                      {item.title}
+                    </div>
+                    <div className="text-xs text-muted-foreground line-clamp-1">{item.description}</div>
+                    <div className="mt-2 flex items-center gap-4 text-xs text-foreground/70">
+                      <span className="inline-flex items-center gap-1"><ThumbsUp className="h-3.5 w-3.5 text-green-500" />{item.votes.up.toLocaleString()}</span>
+                      <span className="inline-flex items-center gap-1"><ThumbsDown className="h-3.5 w-3.5 text-red-500" />{item.votes.down.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </Card>
         </div>
       </div>
       <div className="flex-grow">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <div className="relative">
-          <div
-            ref={scrollerRef}
-            onWheel={onWheelHorizontal}
-            className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x overscroll-x-contain"
-          >
-            <div className="flex gap-6 snap-x snap-mandatory pb-2">
+          <Carousel opts={{ align: 'start' }} className="w-full">
+            <CarouselContent>
               {content.map((item) => (
-                <div
-                  key={item.id}
-                  className="snap-start shrink-0 w-[60vw] sm:w-[48vw] md:w-[34vw] lg:w-[24vw] xl:w-[20vw] 2xl:w-[16vw]"
-                >
-                  <ContentCard
-                    item={item}
-                    onClick={() => onItemClick(item)}
-                    layout="vertical"
-                  />
-                </div>
+                <CarouselItem key={item.id} className="basis-[60vw] sm:basis-[48vw] md:basis-[34vw] lg:basis-[24vw] xl:basis-[20vw] 2xl:basis-[16vw]">
+                  <ContentCard item={item} onClick={() => onItemClick(item)} layout="vertical" />
+                </CarouselItem>
               ))}
-            </div>
-          </div>
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </div>
