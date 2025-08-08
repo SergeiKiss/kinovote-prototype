@@ -1,8 +1,6 @@
 'use client';
 
 import { Film, Home, Tv, Vote, Clapperboard } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import {
   Sidebar,
   SidebarHeader,
@@ -15,25 +13,21 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
-export function AppSidebar() {
-  const pathname = usePathname();
+type SectionId = 'home' | 'movies' | 'series' | 'voting';
 
-  const menuItems = [
-    { id: 'home', label: 'Главная', icon: Home, href: '/' },
-    { id: 'movies', label: 'Фильмы', icon: Film, href: '/movies' },
-    { id: 'series', label: 'Сериалы', icon: Tv, href: '/series' },
-    { id: 'voting', label: 'Голосование', icon: Vote, href: '/voting' },
+export function AppSidebar({
+  activeSection,
+  onNavigate,
+}: {
+  activeSection: SectionId;
+  onNavigate: (section: SectionId) => void;
+}) {
+  const menuItems: Array<{ id: SectionId; label: string; icon: any }> = [
+    { id: 'home', label: 'Главная', icon: Home },
+    { id: 'movies', label: 'Фильмы', icon: Film },
+    { id: 'series', label: 'Сериалы', icon: Tv },
+    { id: 'voting', label: 'Голосование', icon: Vote },
   ];
-
-  const getActiveSection = () => {
-    if (pathname === '/') return 'home';
-    if (pathname.startsWith('/movies')) return 'movies';
-    if (pathname.startsWith('/series')) return 'series';
-    if (pathname.startsWith('/voting')) return 'voting';
-    return 'home';
-  }
-
-  const activeSection = getActiveSection();
 
   return (
     <Sidebar
@@ -55,11 +49,10 @@ export function AppSidebar() {
       <Separator />
       <SidebarContent>
         <SidebarMenu className="p-2">
-          {menuItems.map(item => (
+          {menuItems.map((item) => (
             <SidebarMenuItem key={item.id}>
               <SidebarMenuButton
-                as={Link}
-                href={item.href}
+                onClick={() => onNavigate(item.id)}
                 isActive={activeSection === item.id}
                 className={cn(activeSection === item.id && 'animate-glow', 'h-12 text-base')}
                 tooltip={{ children: item.label }}

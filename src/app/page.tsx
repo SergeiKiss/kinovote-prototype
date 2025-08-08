@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import { usePathname } from 'next/navigation';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -9,17 +8,16 @@ import { DetailedView } from '@/components/detailed-view';
 import { useToast } from '@/hooks/use-toast';
 import { ContentItem, Vote } from '@/lib/types';
 import { initialData } from '@/lib/data';
-
-import HomePage from './home/page';
-import MoviesPage from './movies/page';
-import SeriesPage from './series/page';
-import VotingPage from './voting/page';
+import HomeSection from '@/components/sections/HomeSection';
+import MoviesSection from '@/components/sections/MoviesSection';
+import SeriesSection from '@/components/sections/SeriesSection';
+import VotingSection from '@/components/sections/VotingSection';
 
 export default function Home() {
   const [content, setContent] = useState<ContentItem[]>(initialData);
   const [userVotes, setUserVotes] = useState<Record<number, Vote>>({});
   const { toast } = useToast();
-  const pathname = usePathname();
+  const [activeSection, setActiveSection] = useState<'home' | 'movies' | 'series' | 'voting'>('home');
 
   const handleVote = useCallback(
     (itemId: number, voteType: 'up' | 'down') => {
@@ -100,23 +98,35 @@ export default function Home() {
           </ScrollArea>
       )
     }
-    
-    switch (pathname) {
-      case '/movies':
-        return <MoviesPage content={movies} onItemClick={handleSelectItem} />;
-      case '/series':
-        return <SeriesPage content={series} onItemClick={handleSelectItem} />;
-      case '/voting':
-        return <VotingPage content={content} onItemClick={handleSelectItem} />;
+    switch (activeSection) {
+      case 'movies':
+        return <MoviesSection content={movies} onItemClick={handleSelectItem} />;
+      case 'series':
+        return <SeriesSection content={series} onItemClick={handleSelectItem} />;
+      case 'voting':
+        return (
+          <VotingSection
+            content={content}
+            onItemClick={handleSelectItem}
+            onNavigate={setActiveSection}
+          />
+        );
+      case 'home':
       default:
-        return <HomePage content={content} onItemClick={handleSelectItem} onCTAClick={() => {}} />;
+        return (
+          <HomeSection
+            content={content}
+            onItemClick={handleSelectItem}
+            onCTAClick={() => setActiveSection('voting')}
+          />
+        );
     }
   };
 
   return (
     <SidebarProvider>
       <div className="flex">
-        <AppSidebar />
+        <AppSidebar activeSection={activeSection} onNavigate={setActiveSection} />
         <SidebarInset>
           <div className="flex flex-col h-screen">
             {renderContent()}
