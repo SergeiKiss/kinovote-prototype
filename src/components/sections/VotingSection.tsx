@@ -14,7 +14,7 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from '@/components/ui/carousel';
-import { Slider } from '@/components/ui/slider';
+// убран ползунок громкости — используем точки-индикаторы
 
 export default function VotingSection({
   content,
@@ -89,31 +89,32 @@ export default function VotingSection({
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <div className="relative">
           <Carousel opts={{ align: 'center' }} setApi={setApi} className="w-full">
-            <CarouselContent>
+            <CarouselContent className="ml-0">
               {content.map((item) => (
                 <CarouselItem
                   key={item.id}
-                  className="basis-full sm:basis-3/4 md:basis-2/3 lg:basis-1/2 xl:basis-2/5 2xl:basis-2/5"
+                  className="basis-full pl-0"
                 >
                   <ContentCard item={item} onClick={() => onItemClick(item)} layout="vertical" />
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden sm:flex" />
-            <CarouselNext className="hidden sm:flex" />
+            <CarouselPrevious className="left-3 top-1/2 -translate-y-1/2" />
+            <CarouselNext className="right-3 top-1/2 -translate-y-1/2" />
           </Carousel>
         </div>
         {slideCount > 1 && (
-          <div className="mt-6">
-            <Slider
-              min={0}
-              max={Math.max(slideCount - 1, 0)}
-              step={1}
-              value={[selectedIndex]}
-              onValueChange={(v) => setSelectedIndex(v[0] ?? 0)}
-              onValueCommit={(v) => api?.scrollTo(v[0] ?? 0)}
-              aria-label="Позиция карусели"
-            />
+          <div className="mt-4 flex items-center justify-center gap-2">
+            {Array.from({ length: slideCount }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => api?.scrollTo(i)}
+                data-active={selectedIndex === i}
+                className="h-2.5 w-2.5 rounded-full bg-foreground/30 data-[active=true]:bg-primary transition-colors"
+                aria-label={`Перейти к слайду ${i + 1}`}
+              />
+            ))}
           </div>
         )}
       </div>
