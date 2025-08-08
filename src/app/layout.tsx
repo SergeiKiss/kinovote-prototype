@@ -7,7 +7,7 @@ import { Metrika } from '@/components/metrika';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'КиноВоут',
+  title: 'Кинопоиск',
   description: 'Голосуйте за любимые фильмы и сериалы.',
 };
 

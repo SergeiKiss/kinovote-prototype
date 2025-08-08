@@ -38,7 +38,7 @@ export function AppSidebar({
             <div className='flex items-center gap-2'>
               <Clapperboard className="w-8 h-8 text-primary" />
               <h1 className="text-2xl font-bold text-primary self-center group-data-[collapsible=icon]:hidden">
-                КиноВоут
+                Кинопоиск
               </h1>
             </div>
             <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
