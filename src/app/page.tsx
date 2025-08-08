@@ -255,7 +255,7 @@ const VotingPage = ({
 }) => {
   return (
     <div className="animate-in fade-in-50 h-full flex flex-col">
-      <div className="pt-24">
+      <div className="flex-grow pt-8">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <div className="relative">
           <div className="flex overflow-x-auto space-x-6 pb-4">
@@ -371,9 +371,9 @@ export default function Home() {
           onSectionChange={handleSectionChange}
         />
         <SidebarInset>
-          <div className="relative h-screen">
+          <div className="flex flex-col h-screen">
             {activeSection === 'voting' && !selectedItem && (
-               <div className="absolute top-0 left-0 right-0 p-6 md:p-8 z-10 bg-background">
+               <div className="p-6 md:p-8 z-10 bg-background">
                  <h2 className="text-2xl font-bold tracking-tight mb-4">Топы недели</h2>
                  <div className="flex flex-wrap gap-6">
                    <Card className="w-64 flex flex-col justify-between p-4 bg-card hover:bg-card/80 cursor-pointer" onClick={() => handleSectionChange('movies')}>
@@ -403,8 +403,8 @@ export default function Home() {
                  </div>
                </div>
             )}
-            <ScrollArea className="h-full">
-              <div className={cn("p-6 md:p-8", activeSection === 'voting' && !selectedItem && "pt-0")}>
+            <ScrollArea className="h-full flex-grow">
+              <div className="p-6 md:p-8">
                 {currentSelectedItem ? (
                   <DetailedView
                     item={currentSelectedItem}
