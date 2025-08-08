@@ -9,9 +9,9 @@ export const WelcomeBanner = ({ onCTAClick }: { onCTAClick: () => void }) => (
     <CardContent className="p-0">
       <div className="flex flex-col md:flex-row items-center">
         <div className="p-8 md:w-1/2">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">Добро пожаловать в Кинопоиск</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-foreground">Добро пожаловать на Кинопоиск</h2>
           <p className="mt-4 text-lg text-foreground/70">
-            Ваш центр для открытия и оценки лучших фильмов и сериалов. Голосуйте за своих фаворитов и смотрите, что в тренде!
+            Откройте для себя мир кино и телевидения. Изучайте рейтинги, читайте отзывы и находите новые любимые фильмы и сериалы.
           </p>
           <Button size="lg" className="mt-6" onClick={onCTAClick}>
             Начать голосование
