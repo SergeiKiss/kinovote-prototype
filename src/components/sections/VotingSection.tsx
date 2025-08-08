@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ContentCard } from '@/components/content-card';
@@ -10,11 +10,9 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
+  // arrows/controls не используем — чистый свайп
 } from '@/components/ui/carousel';
-// убран ползунок громкости — используем точки-индикаторы
+// без точек и кнопок — как в примере
 
 export default function VotingSection({
   content,
@@ -28,25 +26,7 @@ export default function VotingSection({
   const goMovies = useCallback(() => onNavigate('movies'), [onNavigate]);
   const goSeries = useCallback(() => onNavigate('series'), [onNavigate]);
 
-  const [api, setApi] = useState<CarouselApi | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [slideCount, setSlideCount] = useState(0);
-
-  useEffect(() => {
-    if (!api) return;
-    const updateFromApi = () => setSelectedIndex(api.selectedScrollSnap());
-    const updateCount = () => setSlideCount(api.scrollSnapList().length);
-    updateCount();
-    updateFromApi();
-    api.on('select', updateFromApi);
-    api.on('reInit', () => {
-      updateCount();
-      updateFromApi();
-    });
-    return () => {
-      api.off('select', updateFromApi);
-    };
-  }, [api]);
+  // интерфейс без контролов — все свайпом/скроллом
 
   return (
     <div className="flex flex-col h-full animate-in fade-in-50 p-6 md:p-8">
@@ -88,35 +68,20 @@ export default function VotingSection({
       <div className="flex-grow">
         <h2 className="text-2xl font-bold tracking-tight mb-6">Карточка нового контента</h2>
         <div className="relative">
-          <Carousel opts={{ align: 'center' }} setApi={setApi} className="w-full">
-            <CarouselContent className="ml-0">
+          <Carousel opts={{ align: 'start' }} className="w-full">
+            <CarouselContent>
               {content.map((item) => (
                 <CarouselItem
                   key={item.id}
-                  className="basis-full pl-0"
+                  className="basis-5/6 sm:basis-2/3 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:basis-1/4"
                 >
                   <ContentCard item={item} onClick={() => onItemClick(item)} layout="vertical" />
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-3 top-1/2 -translate-y-1/2" />
-            <CarouselNext className="right-3 top-1/2 -translate-y-1/2" />
           </Carousel>
         </div>
-        {slideCount > 1 && (
-          <div className="mt-4 flex items-center justify-center gap-2">
-            {Array.from({ length: slideCount }).map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => api?.scrollTo(i)}
-                data-active={selectedIndex === i}
-                className="h-2.5 w-2.5 rounded-full bg-foreground/30 data-[active=true]:bg-primary transition-colors"
-                aria-label={`Перейти к слайду ${i + 1}`}
-              />
-            ))}
-          </div>
-        )}
+        {/* Без точек/кнопок — только свайп */}
       </div>
     </div>
   );
