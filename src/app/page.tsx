@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -12,12 +12,16 @@ import HomeSection from '@/components/sections/HomeSection';
 import MoviesSection from '@/components/sections/MoviesSection';
 import SeriesSection from '@/components/sections/SeriesSection';
 import VotingSection from '@/components/sections/VotingSection';
+import { PopupBanner } from '@/components/popup-banner';
 
 export default function Home() {
   const [content, setContent] = useState<ContentItem[]>(initialData);
   const [userVotes, setUserVotes] = useState<Record<number, Vote>>({});
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState<'home' | 'movies' | 'series' | 'voting'>('home');
+  const [showPopupBanner, setShowPopupBanner] = useState(true);
+
+  // Баннер показывается сразу при загрузке
 
   const handleVote = useCallback(
     (itemId: number, voteType: 'up' | 'down') => {
@@ -83,6 +87,11 @@ export default function Home() {
   const movies = useMemo(() => content.filter(item => item.type === 'movie'), [content]);
   const series = useMemo(() => content.filter(item => item.type === 'series'), [content]);
 
+  const handlePopupProceed = useCallback(() => {
+    setShowPopupBanner(false);
+    setActiveSection('voting');
+  }, []);
+
   const renderContent = () => {
     if (currentSelectedItem) {
       return (
@@ -98,6 +107,7 @@ export default function Home() {
           </ScrollArea>
       )
     }
+    
     switch (activeSection) {
       case 'movies':
         return <MoviesSection content={movies} onItemClick={handleSelectItem} />;
@@ -124,15 +134,23 @@ export default function Home() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="flex">
-        <AppSidebar activeSection={activeSection} onNavigate={setActiveSection} />
-        <SidebarInset>
-          <div className="flex flex-col h-screen">
-            {renderContent()}
-          </div>
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+    <>
+      <PopupBanner
+        isOpen={showPopupBanner}
+        onClose={() => setShowPopupBanner(false)}
+        onProceed={handlePopupProceed}
+      />
+      
+      <SidebarProvider>
+        <div className="flex">
+          <AppSidebar activeSection={activeSection} onNavigate={setActiveSection} />
+          <SidebarInset>
+            <div className="flex flex-col h-screen">
+              {renderContent()}
+            </div>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
+    </>
   );
 }
