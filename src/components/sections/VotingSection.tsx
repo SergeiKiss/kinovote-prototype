@@ -62,7 +62,7 @@ export default function VotingSection({
   const topSeries = useSeriesFallback ? baseTopSeries : filteredSeries;
 
   return (
-    <div className="flex flex-col h-full animate-in fade-in-50 p-6 md:p-8">
+    <div className="flex flex-col h-full overflow-y-auto animate-in fade-in-50 p-6 md:p-8">
       <div>
         <div className="flex items-center justify-between gap-4 mb-4">
           <h2 className="text-2xl font-bold tracking-tight">Топы недели</h2>

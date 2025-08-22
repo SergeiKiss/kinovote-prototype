@@ -145,7 +145,7 @@ export default function Home() {
         <div className="flex">
           <AppSidebar activeSection={activeSection} onNavigate={setActiveSection} />
           <SidebarInset>
-            <div className="flex flex-col h-screen">
+            <div className="flex flex-col min-h-screen overflow-y-auto">
               {renderContent()}
             </div>
           </SidebarInset>
