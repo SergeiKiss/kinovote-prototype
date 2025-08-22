@@ -26,8 +26,12 @@ export function PopupBanner({ isOpen, onClose, onProceed }: PopupBannerProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-in fade-in-200">
-      <div className={cn(
-        "relative bg-background border-2 border-border rounded-lg p-8 max-w-md mx-4 text-center shadow-2xl",
+      <div style={{
+        width: '500px',
+        paddingTop: '30px',
+        paddingBottom: '30px',
+      }} className={cn(
+        "relative bg-background border-2 border-border rounded-lg p-12 max-w-7xl mx-4 text-center shadow-2xl",
         "animate-in zoom-in-95 duration-300",
         isVisible && "animate-in slide-in-from-bottom-4"
       )}>
@@ -35,24 +39,24 @@ export function PopupBanner({ isOpen, onClose, onProceed }: PopupBannerProps) {
           variant="ghost"
           size="icon"
           onClick={onClose}
-          className="absolute top-2 right-2 h-8 w-8 rounded-full hover:bg-muted"
+          className="absolute top-6 right-6 h-12 w-12 rounded-full hover:bg-muted"
         >
-          <X className="h-4 w-4" />
+          <X className="h-6 w-6" />
         </Button>
         
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground">
               Новый раздел
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-xl text-muted-foreground leading-relaxed">
               Голосуйте за фильмы и сериалы
             </p>
           </div>
           
           <Button 
             onClick={onProceed}
-            className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-primary"
+            className="w-48 h-14 text-lg font-semibold bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-primary rounded-lg"
           >
             ПЕРЕЙТИ
           </Button>
