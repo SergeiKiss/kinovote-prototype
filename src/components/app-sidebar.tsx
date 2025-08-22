@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import './voting-button-glow.css';
 
 type SectionId = 'home' | 'movies' | 'series' | 'voting';
 
@@ -43,7 +44,7 @@ export function AppSidebar({
                 Кинопоиск
               </h1>
             </div>
-            <SidebarTrigger className="group-data-[collapsible=icon]:hidden" />
+            <SidebarTrigger className="group-data-[collapsed=icon]:hidden" />
         </div>
       </SidebarHeader>
       <Separator />
@@ -54,7 +55,12 @@ export function AppSidebar({
               <SidebarMenuButton
                 onClick={() => onNavigate(item.id)}
                 isActive={activeSection === item.id}
-                className={cn(activeSection === item.id && 'animate-glow', 'h-12 text-base')}
+                className={cn(
+                  activeSection === item.id && 'animate-glow',
+                  // Свечение для кнопки "Голосование" когда не активна
+                  item.id === 'voting' && activeSection !== 'voting' && 'voting-glow-button',
+                  'h-12 text-base'
+                )}
                 tooltip={{ children: item.label }}
               >
                 <item.icon className="w-5 h-5" />
